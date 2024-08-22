@@ -1,10 +1,11 @@
 <script setup>
+import LoanCalculator from './components/LoanCalculator.vue'
+
 defineOptions({
   name: 'App',
 })
 </script>
 
 <template>
-  <!-- TODO: Complete the coding challenge here! -->
-  <div />
+  <LoanCalculator />
 </template>
