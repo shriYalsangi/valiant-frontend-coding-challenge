@@ -27,3 +27,12 @@ TODO: Quick scratch breakdown of your to-dos, how you broke up the different tas
 
 - write unit tests using vitest
 - write e2e tests using Cypress
+
+
+# Changes
+- Instead of adding buttons 'Calculate Repayments' and 'Reset', update the logic to calculate in real-time
+- Always show the LoanResults component
+- Instead of form submit, Watch for changes and validate in real-time
+- Add some default amount to the Loan amount field, and for the select elements, use the first option as selected by default
+- Move the fetch API URLs to a separate config file and read it from there
+- Update the tests accordingly

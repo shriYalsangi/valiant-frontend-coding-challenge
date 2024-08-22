@@ -12,11 +12,17 @@ const loanData = ref({
   repaymentPeriodLabel: '',
 })
 
+const areAllLoanDataFieldsFilled = () => {
+  return (
+    loanData.value.selectedLoanPurposeAnnualRate !== 0 &&
+    loanData.value.selectedLoanRepaymentPeriod !== 1 &&
+    loanData.value.selectedLoanTermMonth !== 0 &&
+    loanData.value.loanAmount !== 0
+  )
+}
+
 const repayments = computed(() => {
-  if (!loanData.value.selectedLoanPurposeAnnualRate ||
-      !loanData.value.selectedLoanRepaymentPeriod ||
-      !loanData.value.selectedLoanTermMonth ||
-      !loanData.value.loanAmount) {
+  if (!areAllLoanDataFieldsFilled()) {
     return null
   }
   const rate = loanData.value.selectedLoanPurposeAnnualRate / loanData.value.selectedLoanRepaymentPeriod

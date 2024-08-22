@@ -1,55 +1,31 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
 import { fetchData } from '@/utils/fetchData'
+import { formatNumberWithCommas } from '@/utils/numberUtils'
+import { apiUrls } from '@/config'
 
 // State management
 const loanPurposes = ref([])
-const loanAmount = ref('')
+const loanAmount = ref('30,000')
 const loanRepaymentPeriods = ref([])
 const loanTermMonths = ref([])
-const hasSubmitted = ref(false)
 const loanAmountError = ref(null)
 
 const selectedLoanPurpose = ref(null)
 const selectedLoanRepaymentPeriod = ref(null)
 const selectedLoanTermMonth = ref(null)
 
-// Fetch data on component mount
-onMounted(() => {
-  fetchData('http://localhost:5000/loan-purposes', loanPurposes, selectedLoanPurpose, 'annualRate')
-  fetchData('http://localhost:5000/requested-repayment-periods', loanRepaymentPeriods, selectedLoanRepaymentPeriod, 'value')
-  fetchData('http://localhost:5000/requested-term-months', loanTermMonths, selectedLoanTermMonth, 'value')
-})
-
-// Validation logic
-const validateOnSubmit = () => {
-  if (loanAmount.value === '') {
-    loanAmountError.value = 'Please enter a loan amount.'
-    return
-  }
-  loanAmountError.value = null
-}
-
-const validateOnChange = () => {
-  const amount = parseInt(loanAmount.value)
-
-  if (isNaN(amount)) {
-    loanAmountError.value = 'Invalid loan amount. Only numbers are allowed.'
-  } else if (amount < 1000) {
-    loanAmountError.value = 'Loan amount must be at least $1000.'
-  } else if (amount > 20000000) {
-    loanAmountError.value = 'Loan amount cannot exceed $20,000,000.'
-  } else {
-    loanAmountError.value = null
-  }
-}
-
-// Watch for input changes
-watch(loanAmount, () => {
-  validateOnChange()
-})
-
 const emit = defineEmits(['submitLoanData'])
+
+// Fetch data on component mount
+onMounted(async () => {
+  await fetchData(apiUrls.loanPurposes, loanPurposes, selectedLoanPurpose, 'annualRate')
+  await fetchData(apiUrls.loanRepaymentPeriods, loanRepaymentPeriods, selectedLoanRepaymentPeriod, 'value')
+  await fetchData(apiUrls.loanTermMonths, loanTermMonths, selectedLoanTermMonth, 'value')
+
+  // Emit the data after the initial data has been fetched and set
+  emitLoanData()
+})
 
 const repaymentPeriodLabel = computed(() => {
   const selectedPeriod = loanRepaymentPeriods.value.find(
@@ -58,37 +34,50 @@ const repaymentPeriodLabel = computed(() => {
   return selectedPeriod ? selectedPeriod.label : ''
 })
 
-const handleSubmit = () => {
-  hasSubmitted.value = true
-  validateOnSubmit()
+// Emit loan data to parent component
+const emitLoanData = () => {
+  const amount = parseInt(loanAmount.value.replace(/,/g, ''), 10)
+  emit('submitLoanData', {
+    loanAmount: amount,
+    selectedLoanPurposeAnnualRate: selectedLoanPurpose.value,
+    selectedLoanRepaymentPeriod: selectedLoanRepaymentPeriod.value,
+    selectedLoanTermMonth: selectedLoanTermMonth.value,
+    repaymentPeriodLabel: repaymentPeriodLabel.value,
+  })
+}
+
+// Real-time validation and calculation logic
+const validateLoanAmount = () => {
+  const amount = parseInt(loanAmount.value.replace(/,/g, ''), 10)
+
+  if (amount < 1000) {
+    loanAmountError.value = 'Loan amount must be at least $1000.'
+  } else if (amount > 20000000) {
+    loanAmountError.value = 'Loan amount cannot exceed $20,000,000.'
+  } else {
+    loanAmountError.value = null
+  }
 
   if (!loanAmountError.value) {
-    emit('submitLoanData', {
-      loanAmount: loanAmount.value,
-      selectedLoanPurposeAnnualRate: selectedLoanPurpose.value,
-      selectedLoanRepaymentPeriod: selectedLoanRepaymentPeriod.value,
-      selectedLoanTermMonth: selectedLoanTermMonth.value,
-      repaymentPeriodLabel: repaymentPeriodLabel.value,
-    })
+    emitLoanData()
   }
 }
 
-const handleReset = () => {
-  const resetValue = (arr, key) => arr.length > 0 ? arr[0][key] : null
-  loanAmount.value = ''
-  selectedLoanPurpose.value = resetValue(loanPurposes.value, 'annualRate')
-  selectedLoanRepaymentPeriod.value = resetValue(loanRepaymentPeriods.value, 'value')
-  selectedLoanTermMonth.value = resetValue(loanTermMonths.value, 'value')
-  hasSubmitted.value = false
+// Handle input event to format the value
+const handleInputChange = (event) => {
+  let value = event.target.value.replace(/[^\d]/g, '') // Remove all non-digit characters
+  value = value === '' ? '0' : formatNumberWithCommas(value)
+  loanAmount.value = value
+  validateLoanAmount()
 }
+
+// Watch for changes and validate in real-time
+watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoanTermMonth], validateLoanAmount)
 
 </script>
 
 <template>
-  <form
-    class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2"
-    @submit.prevent="handleSubmit"
-  >
+  <form class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2">
     <div class="col-span-2 flex items-center space-x-2">
       <span class="whitespace-nowrap">I need</span>
       <div class="relative grow">
@@ -102,10 +91,11 @@ const handleReset = () => {
           placeholder="Enter an amount between 1,000 and 20,000,000"
           :class="{ 'border-red-500 focus:border-red-500': loanAmountError }"
           aria-label="Loan Amount"
+          @input="handleInputChange"
         >
         <p
           v-if="loanAmountError"
-          class="absolute top-full mt-1 text-xs text-red-500"
+          class="absolute top-full text-xs text-red-500"
           data-test="error-message"
           role="alert"
           aria-live="assertive"
@@ -167,22 +157,6 @@ const handleReset = () => {
           {{ term.label }}
         </option>
       </select>
-    </div>
-
-    <div class="col-span-2 flex space-x-2">
-      <button
-        type="button"
-        class="grow rounded-md bg-gray-500 px-4 py-2 text-white hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-400"
-        @click="handleReset"
-      >
-        Reset Form
-      </button>
-      <button
-        type="submit"
-        class="grow rounded-md bg-blue-500 px-4 py-2 text-white hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-blue-400"
-      >
-        Calculate Repayment
-      </button>
     </div>
   </form>
 </template>

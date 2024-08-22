@@ -1,11 +1,11 @@
-import { shallowMount } from '@vue/test-utils'
+import { mount } from '@vue/test-utils'
 import LoanCalculator from '@/components/LoanCalculator.vue'
 import LoanForm from '@/components/LoanForm.vue'
 import LoanResults from '@/components/LoanResults.vue'
 
 describe('LoanCalculator', () => {
   it('should calculate repayments correctly', () => {
-    const wrapper = shallowMount(LoanCalculator, {
+    const wrapper = mount(LoanCalculator, {
       global: {
         components: { LoanForm, LoanResults },
       },

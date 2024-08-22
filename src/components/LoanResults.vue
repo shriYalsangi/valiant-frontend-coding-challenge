@@ -11,7 +11,6 @@ defineProps({
   repaymentPeriodLabel: {
     type: String,
     required: true,
-    default: '',
   },
 })
 
@@ -24,11 +23,9 @@ const formatCurrency = (value) => {
   })
 }
 </script>
+
 <template>
-  <div
-    v-if="repayments"
-    class="mt-6 rounded-lg border border-gray-300 bg-gray-50 p-4 text-center shadow-md"
-  >
+  <div class="mt-6 rounded-lg border border-gray-300 bg-gray-50 p-4 text-center shadow-md">
     <p
       class="text-lg font-semibold text-lime-600"
       data-test="repayments"
