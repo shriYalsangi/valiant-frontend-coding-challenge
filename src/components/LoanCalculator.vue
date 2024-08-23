@@ -21,24 +21,46 @@ const areAllLoanDataFieldsFilled = () => {
   )
 }
 
-const repayments = computed(() => {
+const nper = computed(() => {
   if (!areAllLoanDataFieldsFilled()) {
     return null
   }
-  const rate = loanData.value.selectedLoanPurposeAnnualRate / loanData.value.selectedLoanRepaymentPeriod
-  const nper = loanData.value.selectedLoanTermMonth
+
+  let nperValue
+  switch (loanData.value.selectedLoanRepaymentPeriod) {
+    case 12:
+      nperValue = loanData.value.selectedLoanTermMonth
+      break
+    case 52:
+      nperValue = loanData.value.selectedLoanTermMonth * (52 / 12)
+      break
+    case 26:
+      nperValue = loanData.value.selectedLoanTermMonth * (26 / 12)
+      break
+    default:
+      return null
+  }
+
+  // Round off the nper value
+  return Math.round(nperValue)
+})
+
+const repayments = computed(() => {
+  if (!nper.value) {
+    return null
+  }
+
+  let rate = loanData.value.selectedLoanPurposeAnnualRate / loanData.value.selectedLoanRepaymentPeriod
+  rate = parseFloat(rate.toFixed(6))
   const pv = loanData.value.loanAmount
 
-  const result = PMT(rate, nper, pv)
-  const roundedResult = Math.round((result * 100) / 100)
-
-  return roundedResult
+  const result = PMT(rate, nper.value, pv)
+  return Math.round((result * 100) / 100)
 })
 
 const totalRepayments = computed(() => {
-  if (!repayments.value) return null
-  const roundedResult = Math.round(repayments.value * loanData.value.selectedLoanTermMonth)
-  return roundedResult
+  if (!repayments.value || !nper.value) return null
+  return Math.round(repayments.value) * nper.value
 })
 
 </script>

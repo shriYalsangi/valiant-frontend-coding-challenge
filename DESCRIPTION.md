@@ -36,3 +36,20 @@ TODO: Quick scratch breakdown of your to-dos, how you broke up the different tas
 - Add some default amount to the Loan amount field, and for the select elements, use the first option as selected by default
 - Move the fetch API URLs to a separate config file and read it from there
 - Update the tests accordingly
+
+# repayment calculation updated logic
+The calculation of 'repayments' varies based on the repayment frequency (monthly, fortnightly, or weekly). The 'nper' (number of periods) logic differs for each frequency due to the loan term being defined in months.
+
+To calculate 'nper' for each repayment period:
+- Monthly: 'nper' equals the loan term, as it's already defined in months per year.
+- Fortnightly: 'nper' equals the loan term multiplied by (26/12), as there are 26 fortnights in a year.
+- Weekly: 'nper' equals the loan term multiplied by (52/12), as there are 52 weeks in a year.
+- Round 'nper' to the nearest integer to represent whole periods.
+
+To calculate the periodic interest rate:
+- Divide the annual interest rate by the number of repayment periods per year.
+- Limit the calculated rate to 6 decimal places (I am not sure how many decimals to use)
+
+For the 'repayments' calculation, used the PMT function with the calculated 'nper,' periodic interest rate, and loan amount. Round the 'repayments' value to the nearest cent.
+
+To calculate the 'total repayments,' multiply the 'repayments' value by the 'nper' value and round up the cents to ensure accurate total payments.

@@ -22,8 +22,8 @@ describe('Loan Payment Calculator', () => {
 
   it('should display the results with those initial default values', () => {
     cy.visit('/')
-    cy.get('[data-test="repayments"]').contains('$5,034')
-    cy.get('[data-test="totalRepayments"]').contains('$30,204')
+    cy.get('[data-test="repayments"]').contains('$1,184')
+    cy.get('[data-test="totalRepayments"]').contains('$30,784')
   })
 
   it('should calculate the monthly repayment correctly', () => {

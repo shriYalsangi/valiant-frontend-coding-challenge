@@ -1,4 +1,6 @@
 <script setup>
+import { formatCurrency } from '@/utils/numberUtils'
+
 defineProps({
   repayments: {
     type: Number,
@@ -14,14 +16,6 @@ defineProps({
   },
 })
 
-const formatCurrency = (value) => {
-  return value.toLocaleString('en-AU', {
-    style: 'currency',
-    currency: 'AUD',
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  })
-}
 </script>
 
 <template>
