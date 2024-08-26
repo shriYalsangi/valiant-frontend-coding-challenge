@@ -19,9 +19,11 @@ const emit = defineEmits(['submitLoanData'])
 
 // Fetch data on component mount
 onMounted(async () => {
-  await fetchData(apiUrls.loanPurposes, loanPurposes, selectedLoanPurpose, 'annualRate')
-  await fetchData(apiUrls.loanRepaymentPeriods, loanRepaymentPeriods, selectedLoanRepaymentPeriod, 'value')
-  await fetchData(apiUrls.loanTermMonths, loanTermMonths, selectedLoanTermMonth, 'value')
+  await Promise.all([
+    fetchData(apiUrls.loanPurposes, loanPurposes, selectedLoanPurpose, 'annualRate'),
+    fetchData(apiUrls.loanRepaymentPeriods, loanRepaymentPeriods, selectedLoanRepaymentPeriod, 'value'),
+    fetchData(apiUrls.loanTermMonths, loanTermMonths, selectedLoanTermMonth, 'value'),
+  ])
 
   // Emit the data after the initial data has been fetched and set
   emitLoanData()
@@ -77,7 +79,10 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
 </script>
 
 <template>
-  <form class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2">
+  <form
+    class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2"
+    @submit.prevent
+  >
     <div class="col-span-2 flex items-center space-x-2">
       <span class="whitespace-nowrap">I need</span>
       <div class="relative grow">

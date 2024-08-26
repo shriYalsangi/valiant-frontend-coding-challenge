@@ -25,24 +25,8 @@ const nper = computed(() => {
   if (!areAllLoanDataFieldsFilled()) {
     return null
   }
-
-  let nperValue
-  switch (loanData.value.selectedLoanRepaymentPeriod) {
-    case 12:
-      nperValue = loanData.value.selectedLoanTermMonth
-      break
-    case 52:
-      nperValue = loanData.value.selectedLoanTermMonth * (52 / 12)
-      break
-    case 26:
-      nperValue = loanData.value.selectedLoanTermMonth * (26 / 12)
-      break
-    default:
-      return null
-  }
-
   // Round off the nper value
-  return Math.round(nperValue)
+  return Math.round(loanData.value.selectedLoanTermMonth * (loanData.value.selectedLoanRepaymentPeriod / 12))
 })
 
 const repayments = computed(() => {
