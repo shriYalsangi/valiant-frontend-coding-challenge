@@ -63,12 +63,12 @@ const totalRepayments = computed(() => {
   return Math.round(repayments.value) * nper.value
 })
 
-const loanFormClasses = 'mx-auto grid grid-cols-1 gap-4 space-y-4 rounded-lg bg-gray-800 p-4 opacity-90 text-zinc-200 shadow-md sm:grid-cols-2'
+const loanFormClasses = 'mx-auto grid grid-cols-1 gap-4 sm:grid-cols-2 sm:gap-4 rounded-lg bg-gray-800 p-4 sm:p-6 opacity-90 text-zinc-200 shadow-md'
 
 </script>
 
 <template>
-  <div class="mx-auto w-full max-w-2xl rounded-lg border border-gray-500 bg-gray-800 p-6 opacity-90">
+  <div class="mx-auto w-full max-w-xl rounded-lg border border-gray-500 bg-gray-800 p-4 opacity-90 sm:max-w-2xl sm:p-6">
     <h1 class="mb-8 text-center text-3xl font-bold text-white">
       Loan Repayment Calculator
     </h1>

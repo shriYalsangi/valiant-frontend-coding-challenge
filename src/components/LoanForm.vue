@@ -78,9 +78,9 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
 
 <template>
   <form :class="[loanFormClasses]">
-    <div class="col-span-2 flex items-center space-x-2">
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:col-span-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
       <span class="whitespace-nowrap">I need</span>
-      <div class="relative grow">
+      <div class="relative w-full sm:grow">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
         <input
           id="loanAmount"
@@ -93,22 +93,13 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
           aria-label="Loan Amount"
           @input="handleInputChange"
         >
-        <p
-          v-if="loanAmountError"
-          class="absolute top-full text-xs text-red-400"
-          data-test="error-message"
-          role="alert"
-          aria-live="assertive"
-        >
-          <span class="font-medium">{{ loanAmountError }}</span>
-        </p>
       </div>
       <span>for</span>
       <select
         id="loanPurpose"
         v-model="selectedLoanPurpose"
         name="loanPurpose"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Purpose"
       >
         <option
@@ -121,13 +112,13 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
       </select>
     </div>
 
-    <div class="col-span-1 flex items-center space-x-2">
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
       <span>repaid</span>
       <select
         id="loanRepaymentPeriod"
         v-model="selectedLoanRepaymentPeriod"
         name="loanRepaymentPeriod"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Repayment Period"
       >
         <option
@@ -140,13 +131,13 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
       </select>
     </div>
 
-    <div class="col-span-1 flex items-center space-x-2">
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
       <span>over</span>
       <select
         id="loanTermMonth"
         v-model="selectedLoanTermMonth"
         name="loanTermMonth"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Term Month"
       >
         <option

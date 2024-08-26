@@ -19,7 +19,7 @@ defineProps({
 </script>
 
 <template>
-  <div class="mt-6 rounded-lg bg-gray-800 p-4 text-center text-zinc-200 opacity-90 shadow-md">
+  <div class="mt-6 rounded-lg bg-gray-800 p-4 text-center text-zinc-200 opacity-90 shadow-md sm:p-6">
     <p
       class="text-lg font-semibold text-emerald-300"
       data-test="repayments"
