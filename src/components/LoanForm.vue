@@ -80,40 +80,34 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
 
 <template>
   <form
-    class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2"
+    :class="[loanFormClasses]"
     @submit.prevent
   >
-    <div class="col-span-2 flex items-center space-x-2">
-      <span class="whitespace-nowrap">I need</span>
-      <div class="relative grow">
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:col-span-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+      <label
+        for="loanAmount"
+        class="whitespace-nowrap"
+      >I need</label>
+      <div class="relative w-full sm:grow">
         <span class="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-500">$</span>
         <input
           id="loanAmount"
           v-model="loanAmount"
           name="loanAmount"
           type="text"
-          class="block w-full rounded border border-gray-300 bg-gray-100 py-2 pl-7 pr-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+          class="block w-full rounded border border-gray-300 bg-gray-100 py-2 pl-7 pr-4 text-lg font-semibold leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
           placeholder="Enter an amount between 1,000 and 20,000,000"
           :class="{ 'border-red-500 focus:border-red-500': loanAmountError }"
           aria-label="Loan Amount"
           @input="handleInputChange"
         >
-        <p
-          v-if="loanAmountError"
-          class="absolute top-full text-xs text-red-500"
-          data-test="error-message"
-          role="alert"
-          aria-live="assertive"
-        >
-          <span class="font-medium">{{ loanAmountError }}</span>
-        </p>
       </div>
-      <span>for</span>
+      <label for="loanPurpose">for</label>
       <select
         id="loanPurpose"
         v-model="selectedLoanPurpose"
         name="loanPurpose"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Purpose"
       >
         <option
@@ -126,13 +120,13 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
       </select>
     </div>
 
-    <div class="col-span-1 flex items-center space-x-2">
-      <span>repaid</span>
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+      <label for="loanRepaymentPeriod">repaid</label>
       <select
         id="loanRepaymentPeriod"
         v-model="selectedLoanRepaymentPeriod"
         name="loanRepaymentPeriod"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Repayment Period"
       >
         <option
@@ -145,13 +139,13 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
       </select>
     </div>
 
-    <div class="col-span-1 flex items-center space-x-2">
-      <span>over</span>
+    <div class="col-span-1 flex flex-col items-start space-y-2 sm:flex-row sm:items-center sm:space-x-2 sm:space-y-0">
+      <label for="loanTermMonth">over</label>
       <select
         id="loanTermMonth"
         v-model="selectedLoanTermMonth"
         name="loanTermMonth"
-        class="grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+        class="w-full grow rounded border border-gray-300 bg-gray-100 px-4 py-2 leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
         aria-label="Loan Term Month"
       >
         <option

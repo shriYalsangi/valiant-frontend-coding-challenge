@@ -53,3 +53,8 @@ To calculate the periodic interest rate:
 For the 'repayments' calculation, used the PMT function with the calculated 'nper,' periodic interest rate, and loan amount. Round the 'repayments' value to the nearest cent.
 
 To calculate the 'total repayments,' multiply the 'repayments' value by the 'nper' value and round up the cents to ensure accurate total payments.
+
+# further changes
+- optimise the nper function, so that don't need to look for hardcoded values
+- design changes to make it responsive and a slightly different design with updated background colors, font sizes, layout updates
+- update the form to have labels, by converting the span elements as labels for the respective input elements
