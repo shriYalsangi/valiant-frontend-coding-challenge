@@ -19,18 +19,18 @@ defineProps({
 </script>
 
 <template>
-  <div class="mt-6 rounded-lg border border-gray-300 bg-gray-50 p-4 text-center shadow-md">
+  <div class="mt-6 rounded-lg bg-gray-800 p-4 text-center text-zinc-200 opacity-90 shadow-md">
     <p
-      class="text-lg font-semibold text-lime-600"
+      class="text-lg font-semibold text-emerald-300"
       data-test="repayments"
     >
-      {{ formatCurrency(repayments) }} {{ repaymentPeriodLabel }} repayments
+      <span class="text-3xl">{{ formatCurrency(repayments) }}</span> {{ repaymentPeriodLabel }} repayments
     </p>
     <p
-      class="mt-2 text-lg font-semibold text-stone-500"
+      class="mt-2 text-lg font-semibold text-stone-300"
       data-test="totalRepayments"
     >
-      {{ formatCurrency(totalRepayments) }} Total repayments
+      <span class="text-2xl">{{ formatCurrency(totalRepayments) }}</span> Total repayments
     </p>
   </div>
 </template>

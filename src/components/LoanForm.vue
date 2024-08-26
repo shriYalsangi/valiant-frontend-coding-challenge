@@ -77,7 +77,7 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
 </script>
 
 <template>
-  <form class="mx-auto grid max-w-lg grid-cols-1 gap-4 space-y-4 rounded-lg bg-white p-4 shadow-md sm:grid-cols-2">
+  <form :class="[loanFormClasses]">
     <div class="col-span-2 flex items-center space-x-2">
       <span class="whitespace-nowrap">I need</span>
       <div class="relative grow">
@@ -87,7 +87,7 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
           v-model="loanAmount"
           name="loanAmount"
           type="text"
-          class="block w-full rounded border border-gray-300 bg-gray-100 py-2 pl-7 pr-4 text-sm leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
+          class="block w-full rounded border border-gray-300 bg-gray-100 py-2 pl-7 pr-4 text-lg font-semibold leading-tight text-gray-700 focus:border-blue-500 focus:bg-white focus:outline-none"
           placeholder="Enter an amount between 1,000 and 20,000,000"
           :class="{ 'border-red-500 focus:border-red-500': loanAmountError }"
           aria-label="Loan Amount"
@@ -95,7 +95,7 @@ watch([loanAmount, selectedLoanPurpose, selectedLoanRepaymentPeriod, selectedLoa
         >
         <p
           v-if="loanAmountError"
-          class="absolute top-full text-xs text-red-500"
+          class="absolute top-full text-xs text-red-400"
           data-test="error-message"
           role="alert"
           aria-live="assertive"
